@@ -48,7 +48,7 @@ server <- function(input, output) {
   	
   	# Build plot
   	outplot <- dygraph(commercial_data_key, main=paste0("Google Search Intensity: ", input$keyword_par)) %>%
-  		dyOptions(useDataTimezone = TRUE)
+  		dyOptions(colors="darkred", strokeWidth = 2, fillGraph = TRUE, fillAlpha = 0.4, useDataTimezone = TRUE)
 		
   	outplot
   })
@@ -56,3 +56,4 @@ server <- function(input, output) {
 
 # Run app
 app_out <- shinyApp(ui = ui, server = server)
+app_out
