@@ -4,16 +4,9 @@ library(data.table)
 library(dygraphs)
 
 # List all files
-commercial_data <- readRDS("./commercial_data.rds")
-
-# Add on to list
-Current_Files <- commercial_data[, .N, keyby=.(keyword,File)]
-Current_Files_More <- data.table(keyword=c("lebron james","million dollar mile","alicia keys","bud light","michelob ultra"))
-Current_Files <- rbindlist(list(Current_Files, Current_Files_More), fill=TRUE)
-setorder(Current_Files, keyword)
-Current_Files[keyword=="weathertech", File := "Super_Bowl/weathertech/CSVs/weathertech_20190202_185151.csv"]
-Current_Files[keyword=="budlight", File := "Super_Bowl/bud_light/CSVs/bud_light_20190203_204015.csv"]
-Current_Files[keyword=="michelob ultra", File := "Super_Bowl/michelob_ultra/CSVs/michelob_ultra_20190203_192625.csv"]
+all_files <- fread("aws s3 --profile scott ls s3://havas-data-science/Super_Bowl/ --recursive")
+all_files <- all_files[V4 %like% ".csv"]
+all_files[, Dir := basename(dirname(dirname(V4)))]
 
 # Latest file
 Latest_Files <- all_files[, .SD[.N], by=.(Dir)]

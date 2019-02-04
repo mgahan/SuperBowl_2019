@@ -7,8 +7,20 @@ library(dygraphs)
 # Read in data
 commercial_data <- readRDS("./commercial_data.rds")
 
+# Get specific files
+# Current_File="Super_Bowl/capillus/CSVs/capillus_20190203_135249.csv"
+# dat1 <- fread(cmd=paste0("aws s3 --profile scott cp s3://havas-data-science/",Current_File," -"))
+# dat1[, timestamp := as.POSIXct(date, tz="America/Los_Angeles")]
+# dat1[, hits := as.character(hits)]
+# dat1[hits=="<1", hits := "0.5"]
+# dat1[, hits := as.numeric(hits)]
+# out_plot <- dygraph(dat1[, .(timestamp, hits)], main="Search") %>% 
+# 	dyOptions(useDataTimezone = TRUE)	
+# print(out_plot)
+# dat1[, File := Current_File]
+
 # Inputs
-keywords <- commercial_data[, .N, keyby=.(keyword)]
+keywords <- commercial_data[, .N, keyby=.(keyword)]$keyword
 
 # Build ui
 ui <- fluidPage(
